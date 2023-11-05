@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package lobby;
+
+// The lobby service definition.
+service LobbyService {
+  // Sends a request to join a lobby. The response will be a stream of messages as new clients join.
+  rpc JoinLobby (JoinRequest) returns (stream LobbyUpdate) {}
+
+  // Sends a request to create a new lobby.
+  rpc CreateLobby (CreateRequest) returns (CreateResponse) {}
+}
+
+// The request message containing the lobby name.
+message JoinRequest {
+  string name = 1;
+}
+
+// The response message containing updates from the lobby.
+message LobbyUpdate {
+  string message = 1;
+}
+
+// The request message for creating a lobby.
+message CreateRequest {
+  string name = 1;
+}
+
+// The response message confirming lobby creation.
+message CreateResponse {
+  string message = 1;
+}
