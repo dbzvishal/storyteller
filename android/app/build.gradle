@@ -4,27 +4,27 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
+def gradleProperties = new Properties()
+def gradlePropertiesFile = rootProject.file('gradle.properties')
+if (gradlePropertiesFile.exists()) {
+    gradlePropertiesFile.withReader('UTF-8') { reader ->
+        gradleProperties.load(reader)
     }
 }
 
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+def flutterVersionCode = gradleProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
     flutterVersionCode = '1'
 }
 
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
+def flutterVersionName = gradleProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
 android {
     namespace "com.obi.storyteller.storyteller"
-    compileSdkVersion localProperties.getProperty('flutter.compileSdkVersion')
+    compileSdkVersion gradleProperties.getProperty('flutter.compileSdkVersion')
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -45,8 +45,8 @@ android {
         applicationId "com.obi.storyteller.storyteller"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion localProperties.getProperty('flutter.minSdkVersion')
-        targetSdkVersion localProperties.getProperty('flutter.targetSdkVersion')
+        minSdkVersion gradleProperties.getProperty('flutter.minSdkVersion')
+        targetSdkVersion gradleProperties.getProperty('flutter.targetSdkVersion')
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
