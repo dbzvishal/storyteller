@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
+import 'package:storyteller/utils/grpc.dart';
 
 class HostLobbyPage extends StatelessWidget {
   final TextEditingController _lobbyNameController = TextEditingController();
+  final GrpcClient _grpcClient = GrpcClient();
+
+  HostLobbyPage({
+    super.key
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Host Lobby'),
+        title: const Text('Host Lobby'),
       ),
       body: Center(
         child: Padding(
@@ -18,17 +23,21 @@ class HostLobbyPage extends StatelessWidget {
             children: <Widget>[
               TextField(
                 controller: _lobbyNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Enter Lobby Name',
                 ),
               ),
               ElevatedButton(
                 onPressed: () {
+                  // TODO validation
+                  if (_lobbyNameController.text.isEmpty) {
+                    // Pop out if any error in input
+                    Navigator.pop(context);
+                  }
                   // Here you would use the gRPC client to create a lobby
-                  // For now, we'll just pop back to the previous screen
-                  Navigator.pop(context);
+                  _grpcClient.createLobby(_lobbyNameController.text);
                 },
-                child: Text('Create Room'),
+                child: const Text('Create Room'),
               ),
             ],
           ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
+import 'package:storyteller/utils/grpc.dart';
 
 class JoinLobbyPage extends StatelessWidget {
   final TextEditingController _lobbyNameController = TextEditingController();
+  final GrpcClient _grpcClient = GrpcClient();
 
   JoinLobbyPage({
     super.key
@@ -29,8 +30,7 @@ class JoinLobbyPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   // Set up gRPC server connection here.
-                  // For now, we'll just pop back to the previous screen
-                  Navigator.pop(context);
+                  _grpcClient.joinLobby(_lobbyNameController.text);
                 },
                 child: const Text('Join Lobby'),
               ),

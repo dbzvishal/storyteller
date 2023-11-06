@@ -5,7 +5,9 @@ package lobby;
 // The lobby service definition.
 service LobbyService {
   // Sends a request to join a lobby. The response will be a stream of messages as new clients join.
-  rpc JoinLobby (JoinRequest) returns (stream LobbyUpdate) {}
+  // TODO update to `stream LobbyUpdate` when we want to open a bidirectional connection.
+  // TODO Figure out how this works later
+  rpc JoinLobby (JoinRequest) returns (LobbyUpdate) {}
 
   // Sends a request to create a new lobby.
   rpc CreateLobby (CreateRequest) returns (CreateResponse) {}

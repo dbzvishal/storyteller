@@ -36,8 +36,8 @@ class LobbyServiceClient extends $grpc.Client {
       : super(channel, options: options,
         interceptors: interceptors);
 
-  $grpc.ResponseStream<$0.LobbyUpdate> joinLobby($0.JoinRequest request, {$grpc.CallOptions? options}) {
-    return $createStreamingCall(_$joinLobby, $async.Stream.fromIterable([request]), options: options);
+  $grpc.ResponseFuture<$0.LobbyUpdate> joinLobby($0.JoinRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$joinLobby, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.CreateResponse> createLobby($0.CreateRequest request, {$grpc.CallOptions? options}) {
@@ -54,7 +54,7 @@ abstract class LobbyServiceBase extends $grpc.Service {
         'JoinLobby',
         joinLobby_Pre,
         false,
-        true,
+        false,
         ($core.List<$core.int> value) => $0.JoinRequest.fromBuffer(value),
         ($0.LobbyUpdate value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.CreateRequest, $0.CreateResponse>(
@@ -66,14 +66,14 @@ abstract class LobbyServiceBase extends $grpc.Service {
         ($0.CreateResponse value) => value.writeToBuffer()));
   }
 
-  $async.Stream<$0.LobbyUpdate> joinLobby_Pre($grpc.ServiceCall call, $async.Future<$0.JoinRequest> request) async* {
-    yield* joinLobby(call, await request);
+  $async.Future<$0.LobbyUpdate> joinLobby_Pre($grpc.ServiceCall call, $async.Future<$0.JoinRequest> request) async {
+    return joinLobby(call, await request);
   }
 
   $async.Future<$0.CreateResponse> createLobby_Pre($grpc.ServiceCall call, $async.Future<$0.CreateRequest> request) async {
     return createLobby(call, await request);
   }
 
-  $async.Stream<$0.LobbyUpdate> joinLobby($grpc.ServiceCall call, $0.JoinRequest request);
+  $async.Future<$0.LobbyUpdate> joinLobby($grpc.ServiceCall call, $0.JoinRequest request);
   $async.Future<$0.CreateResponse> createLobby($grpc.ServiceCall call, $0.CreateRequest request);
 }
