@@ -4,40 +4,51 @@ import 'package:storyteller/utils/grpc.dart';
 class JoinLobbyPage extends StatelessWidget {
   final TextEditingController _lobbyNameController = TextEditingController();
   final GrpcClient _grpcClient = GrpcClient();
+  final _formKey = GlobalKey<FormState>();
 
-  JoinLobbyPage({
-    super.key
-  });
+  JoinLobbyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Join Lobby'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextField(
-                controller: _lobbyNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Enter Lobby Name',
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Set up gRPC server connection here.
-                  _grpcClient.joinLobby(_lobbyNameController.text);
-                },
-                child: const Text('Join Lobby'),
-              ),
-            ],
-          ),
+        appBar: AppBar(
+          title: const Text('Join Lobby'),
         ),
-      ),
-    );
+        body: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Enter Lobby Name to join',
+                    ),
+                    controller: _lobbyNameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Lobby Name is required';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() == true) {
+                        // Set up gRPC server connection here.
+                        _grpcClient.joinLobby(_lobbyNameController.text);
+                      }
+                    },
+                    child: const Text('Join Lobby'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 }
